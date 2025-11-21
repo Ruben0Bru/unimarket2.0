@@ -3,13 +3,23 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+    
+    console.log('Name:', name);
     console.log('Email:', email);
     console.log('Password:', password);
   };
@@ -52,18 +62,41 @@ export default function LoginPage() {
         {/* Línea decorativa arriba del card */}
         <div className="h-1.5 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 rounded-t-3xl shadow-xl shadow-blue-500/40 animate-fade-in-up" />
 
-        {/* Tarjeta de login */}
+        {/* Tarjeta de registro */}
         <div className="bg-white/95 backdrop-blur-lg rounded-b-3xl shadow-2xl overflow-hidden border border-white/80 border-t-0 hover:shadow-3xl hover:border-white transition-all duration-300 animate-fade-in-up animation-delay-200">
           
           <div className="p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-1 text-center tracking-tight">
-              Bienvenido
+              Crear cuenta
             </h2>
             <p className="text-gray-500 text-sm mb-6 text-center font-medium">
-              Inicia sesión para acceder a tu cuenta
+              Regístrate para comenzar a usar UniMarket
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Campo Nombre */}
+              <div>
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Nombre completo
+                </label>
+                <div className="relative group">
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="Juan Pérez"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 text-sm transition-all duration-200 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 hover:border-gray-300 group-focus-within:border-blue-500"
+                  />
+                  <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+
               {/* Campo Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -75,7 +108,7 @@ export default function LoginPage() {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    placeholder="tu@email.com"
+                    placeholder="tu@correo.edu.co"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -97,7 +130,7 @@ export default function LoginPage() {
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                     placeholder="••••••••"
                     required
                     value={password}
@@ -123,33 +156,66 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Recordar y olvide contraseña */}
-              <div className="flex items-center justify-between pt-1">
+              {/* Campo Confirmar Contraseña */}
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Confirmar Contraseña
+                </label>
+                <div className="relative group">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    placeholder="••••••••"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 text-sm transition-all duration-200 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 hover:border-gray-300 group-focus-within:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200 p-1"
+                  >
+                    {showConfirmPassword ? (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-4.803m5.596-3.856a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Términos y condiciones */}
+              <div className="flex items-center pt-1">
                 <label className="flex items-center cursor-pointer group hover:opacity-80 transition-opacity">
                   <input
                     type="checkbox"
-                    name="remember-me"
+                    name="terms"
+                    required
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer"
                   />
                   <span className="ml-2 text-xs font-medium text-gray-700">
-                    Recuérdame
+                    Acepto los{' '}
+                    <a href="#" className="text-blue-600 hover:text-blue-700 hover:underline">
+                      términos y condiciones
+                    </a>
                   </span>
                 </label>
-
-                <a 
-                  href="#" 
-                  className="text-xs font-medium text-blue-600 hover:text-blue-700 hover:underline transition-all duration-200"
-                >
-                  ¿Olvidaste tu contraseña?
-                </a>
               </div>
 
-              {/* Botón Entrar */}
+              {/* Botón Registrarse */}
               <button
                 type="submit"
                 className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-xl shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-md text-sm mt-5"
               >
-                Entrar a UniMarket
+                Crear cuenta en UniMarket
               </button>
             </form>
 
@@ -176,15 +242,15 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* Enlace para registrarse */}
+            {/* Enlace para iniciar sesión */}
             <div className="mt-6 text-center">
               <p className="text-gray-600 text-xs">
-                ¿No tienes una cuenta?{' '}
+                ¿Ya tienes una cuenta?{' '}
                 <a 
-                  href="/register" 
+                  href="/login" 
                   className="font-bold text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200"
                 >
-                  Regístrate ahora
+                  Inicia sesión
                 </a>
               </p>
             </div>
@@ -250,3 +316,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
